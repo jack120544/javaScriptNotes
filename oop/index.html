@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>factory</title>
+</head>
+
+<body>
+    <script>
+        // 工厂模式
+        {
+            function person(name, age, sex) {
+                let p = new Object();
+                p.name = name;
+                p.age = age;
+                p.sex = sex;
+                p.sayName = function () {
+                    console.log(this.name);
+                }
+                return p
+            }
+            let person1 = person('jack', 18, '男');
+            let person2 = person("marry", 17, "女");
+            console.log(person1, person2);
+        };
+        // 构造函数
+        {
+            function Person(name, age, sex) {
+                this.name = name;
+                this.age = age;
+                this.sex = sex;
+                this.sayName = () => {
+                    console.log(this.name);
+                }
+                this.sayAge = sayAge;
+            }
+
+            function sayAge() {
+                console.log(this.age);
+            }
+            let person1 = new Person('jack', 18, '男');
+            person1.sayAge();
+            let person2 = new Person("marry", 17, "女");
+            person2.sayAge();
+            console.log(person1, person2);
+        };
+        // 原型
+        {
+
+        };
+        //组合使用构造函数模式和原型模式
+        {
+            function Person(name, age, sex) {
+                this.name = name
+                this.age = age
+                this.sex = sex
+                this.friend = ['xiaoming', 'xiaohong']
+            }
+            Person.prototype = {
+                constructor: Person,
+                sayName: function () {
+                    console.log(this.name)
+                }
+            }
+            let person1 = new Person('jack', 18, '男')
+            let person2 = new Person('marry', 20, '女')
+            person1.friend.push("van")
+            console.log(person1.friend, person2.friend)
+            console.log(person1.friend === person2.friend)
+            console.log(person1.sayName === person2.sayName)
+            person1.sayName()
+            person2.sayName()
+        }
+    </script>
+</body>
+
+</html>
