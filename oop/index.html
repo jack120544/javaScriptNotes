@@ -48,30 +48,69 @@
         };
         // 原型
         {
-
+            // 理解原型
+            {
+                function Person() {};
+                Person.prototype.name = 'jack';
+                Person.prototype.sayName = function () {
+                    console.log("hello jack");
+                };
+                let person1 = new Person();
+                let person2 = new Person();
+                person1.sayName();
+                person2.sayName();
+                console.log(Person.prototype.isPrototypeOf(person1));
+                console.log(Person.prototype.isPrototypeOf(person2));
+                // 实例化设置属性屏蔽了原型上的属性
+                person1.name = 'marry';
+                console.log(person1.name, person2.name);
+            }
+            // in操作符
+            {
+                // 单独使用
+                function Person() {};
+                Person.prototype.name = 'jack';
+                Person.prototype.sayName = function () {
+                    console.log("hello jack");
+                };
+                let person1 = new Person();
+                let person2 = new Person();
+                console.log("name" in person1,'name' in person2);
+                person1.name = 'marry';
+                console.log(person1.name);
+                console.log("name" in person1,'name' in person2);
+                // for-in
+            }
+            // 原型的简单写法
+            {}
+            // 原型的动态性
+            {}
+            // 原生对象的原型
+            {}
+            // 原型对象的问题
         };
         //组合使用构造函数模式和原型模式
         {
             function Person(name, age, sex) {
-                this.name = name
-                this.age = age
-                this.sex = sex
-                this.friend = ['xiaoming', 'xiaohong']
+                this.name = name;
+                this.age = age;
+                this.sex = sex;
+                this.friend = ['xiaoming', 'xiaohong'];
             }
             Person.prototype = {
                 constructor: Person,
                 sayName: function () {
-                    console.log(this.name)
+                    console.log(this.name);
                 }
             }
-            let person1 = new Person('jack', 18, '男')
-            let person2 = new Person('marry', 20, '女')
-            person1.friend.push("van")
-            console.log(person1.friend, person2.friend)
-            console.log(person1.friend === person2.friend)
-            console.log(person1.sayName === person2.sayName)
-            person1.sayName()
-            person2.sayName()
+            let person1 = new Person('jack', 18, '男');
+            let person2 = new Person('marry', 20, '女');
+            person1.friend.push("van");
+            console.log(person1.friend, person2.friend);
+            console.log(person1.friend === person2.friend);
+            console.log(person1.sayName === person2.sayName);
+            person1.sayName();
+            person2.sayName();
         }
     </script>
 </body>
