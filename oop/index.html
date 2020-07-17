@@ -75,19 +75,74 @@
                 };
                 let person1 = new Person();
                 let person2 = new Person();
-                console.log("name" in person1,'name' in person2);
+                console.log("name" in person1, 'name' in person2);
+                //true true
                 person1.name = 'marry';
                 console.log(person1.name);
-                console.log("name" in person1,'name' in person2);
+                console.log("name" in person1, 'name' in person2);
+                //true true
                 // for-in
             }
             // 原型的简单写法
-            {}
+            {
+                function Person() {};
+                Person.prototype = {
+                    // constructor:Person,
+                    name: "jack",
+                    age: 18,
+                    sayName: function () {
+                        console.log(this.name);
+                    }
+                };
+                let friend = new Person();
+                console.log(friend instanceof Object);
+                console.log(friend instanceof Person);
+                console.log(friend.constructor == Person); //false
+                console.log(friend.constructor == Object); //true
+            }
             // 原型的动态性
-            {}
+            {
+                function Person() {};
+                Person.prototype.sayName = function () {
+                    console.log('jack');
+                };
+                let friend = new Person();
+                friend.sayName();
+                Person.prototype = {
+                    name: 'jack',
+                    age: 18,
+                    sayAge: function () {
+                        console.log(this.name);
+                    }
+                }
+                let friend2 = new Person();
+                friend2.sayAge(); //error
+            }
             // 原生对象的原型
-            {}
+            {
+                // 所有原生应用类型(Object,String,Array等)都在构造函数的原型上定义了方法
+                console.log(typeof Array.prototype.sort); //function
+                console.log(typeof String.prototype.startsWith); //function
+            }
             // 原型对象的问题
+            {
+                function Person() {};
+                Person.prototype = {
+                    name: "jack",
+                    age: 18,
+                    sayName: function () {
+                        console.log(this.name);
+                    },
+                    friends: ['marry', 'luo']
+                }
+                let person1 = new Person();
+                let person2 = new Person();
+                person1.friends.push("fei");
+                console.log(person1.friends);
+                console.log(person2.friends);
+                console.log(person1.friends === person2.friends); //true
+                // 共享属性造成实例对象的污染
+            }
         };
         //组合使用构造函数模式和原型模式
         {
@@ -111,6 +166,22 @@
             console.log(person1.sayName === person2.sayName);
             person1.sayName();
             person2.sayName();
+        }
+        // 动态原型模式
+        {
+            function Person(name, age) {
+                this.name = name;
+                this.age = age
+                // 方法
+                if (typeof this.sayName != 'function') {
+                    Person.prototype.sayName = function () {
+                        console.log(this.name)
+                    }
+                }
+            };
+            let person1 = new Person('jack', 18)
+            person1.sayName()
+            console.log(person1 instanceof Person)
         }
     </script>
 </body>
