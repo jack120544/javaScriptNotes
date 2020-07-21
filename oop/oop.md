@@ -150,4 +150,48 @@
             console.log(person1 instanceof Person)型之间的联系
 
 * 寄生构造函数模式
+  + 这种模式的基本思想是创建一个函数，该函数只作为封装创建对象的代码，然后再返回新创建的对象。
+
+  + function Person(name, age) {
+
+                let obj = new Object();
+                obj.name = name;
+                obj.age = age;
+                obj.sayName = function () {
+                    console.log('hello ' + this.name);
+                };
+                return obj
+            }
+            let person1 = new Person('jack', 18);
+            person1.sayName();
+
 * 稳妥构造函数模式
+  + 新创建的对象和的实例方法不引用this
+  + 不适用new操作符调用构造函数
+  + function Person(name, age) {
+
+                let obj = new Object();
+                obj.sayName = function () {
+                    return name
+                };
+                return obj
+            }
+            let person1 = new Person('jack',18);
+            console.log(person1.sayName());
+## 继承
+  - 实现继承主要依靠原型链来实现的
+  - 原型链
+    - 别忘记默认的原型
+      - 所有函数的默认原型都是Object的实例，最顶层。
+    - 确定原型和实例的关系
+      - 可以通过instanceof操作符和isPrototypeof()方法来确定原型和实例之间的关系
+    - 谨慎地定义方法
+    - 原型链的问题
+  - 借用构造函数
+    - 传递参数
+    - 借用构造函数的问题 
+  - 组合继承
+  - 原型式继承
+  - 寄生式继承
+  - 寄生组合式继承
+

@@ -171,17 +171,46 @@
         {
             function Person(name, age) {
                 this.name = name;
-                this.age = age
+                this.age = age;
                 // 方法
                 if (typeof this.sayName != 'function') {
                     Person.prototype.sayName = function () {
-                        console.log(this.name)
+                        console.log(this.name);
                     }
                 }
             };
-            let person1 = new Person('jack', 18)
-            person1.sayName()
-            console.log(person1 instanceof Person)
+            let person1 = new Person('jack', 18);
+            person1.sayName();
+            console.log(person1 instanceof Person);
+        }
+        // 寄生构造函数模式
+        {
+            function Person(name, age) {
+                let obj = new Object();
+                obj.name = name;
+                obj.age = age;
+                obj.sayName = function () {
+                    console.log('hello ' + this.name);
+                };
+                return obj
+            }
+            let person1 = new Person('jack', 18);
+            person1.sayName();
+        }
+        // 稳妥构造函数模式
+        {
+            function Person(name, age) {
+                let obj = new Object();
+                obj.sayName = function () {
+                    return name
+                };
+                return obj
+            }
+            let person1 = new Person('jack',18);
+            console.log(person1.sayName());
+            // 只能通过调用sayName()访问其数据成员
+            // 这种稳妥构造函数提供的安全性能使他非常适合在某些安全执行环境下使用
+            // 例如：ADsafe和Caja提供的环境下使用
         }
     </script>
 </body>
