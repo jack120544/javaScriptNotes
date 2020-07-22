@@ -206,11 +206,32 @@
                 };
                 return obj
             }
-            let person1 = new Person('jack',18);
+            let person1 = new Person('jack', 18);
             console.log(person1.sayName());
             // 只能通过调用sayName()访问其数据成员
             // 这种稳妥构造函数提供的安全性能使他非常适合在某些安全执行环境下使用
             // 例如：ADsafe和Caja提供的环境下使用
+        }
+        // 原型链
+        {
+            function Person() {
+                this.name = "jack";
+            };
+            Person.prototype.sayName = function () {
+                return this.name;
+            };
+
+            function Person1() {
+                this.age = 18;
+            };
+            Person1.prototype = new Person();
+            Person1.prototype.sayAge = function () {
+                return this.age;
+            };
+            var person = new Person1();
+            console.log(person.sayName(), person.sayAge()); //jack 18
+            // 默认原型，即所有的引用类型默认都继承了Object
+            console.log(Person1.prototype.isPrototypeOf(person))//true
         }
     </script>
 </body>
