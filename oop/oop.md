@@ -178,9 +178,11 @@
             }
             let person1 = new Person('jack',18);
             console.log(person1.sayName());
+
 ## 继承
-  - 实现继承主要依靠原型链来实现的
-  - 原型链
+
+  + 实现继承主要依靠原型链来实现的
+  + 原型链
     - 别忘记默认的原型
       - 所有函数的默认原型都是Object的实例，最顶层。
     - 确定原型和实例的关系
@@ -190,21 +192,120 @@
     - 原型链的问题
       - 包含引用类型的原型，会把引用类型的原型属性会被所有实例共享
       - 在创建子类型的实例时，没有办法在不影响所有对象实例的情况下给超类型的构造函数传递参数
-  - 借用构造函数
+    -             function Person() {
+
+                this.name = "jack";
+            };
+            Person.prototype.sayName = function () {
+                return this.name;
+            };
+
+            function Person1() {
+                this.age = 18;
+            };
+            Person1.prototype = new Person();
+            Person1.prototype.sayAge = function () {
+                return this.age;
+            };
+            let person = new Person1();
+            console.log(person.sayName(), person.sayAge()); //jack 18
+            // 默认原型，即所有的引用类型默认都继承了Object
+            console.log(person instanceof Object) //true
+            console.log(Object.prototype.isPrototypeOf(person)) //true
+            console.log(Person1.prototype.isPrototypeOf(person)) //true
+
+  + 借用构造函数
     - 通过apply()和call()方法可以在新创建的对象上执行函数
     - 传递参数
       - 可以在子类型构造函数中向超类型构造函数传递参数
     - 借用构造函数的问题
       - 函数无法复用
-  - 组合继承
+    -  function Colors() {
+
+                this.colors = ['red', 'blcak', 'blue'];
+            }
+
+            function Colors1() {
+                Colors.call(this);
+            }
+            let inheritColor = new Colors1()
+            inheritColor.colors.push('green');
+            console.log(inheritColor.colors);
+            let inheritColor1 = new Colors1();
+            console.log(inheritColor1.colors)
+            // 两个实例函数互不干涉
+
+  + 组合继承
     - 即通过原型链和借用构造函数的技术结合在一次
     - 融合了两个的优点，解决了函数无法复用和原型属性会被所有实例共享的问题
-  - 原型式继承
+    - function PersonColors(name) {
+
+                this.name = name; 
+                this.colors = ['red', 'blcak', 'blue'];
+            }
+            PersonColors.prototype.sayName = function () {
+                console.log(this.name); 
+            }
+
+            function PersonColors1(name, age) {
+                PersonColors.call(this, name);
+                this.age = age;
+            }
+            // 继承方法
+            PersonColors1.prototype = new PersonColors();
+            PersonColors1.prototype.constructor = PersonColors1;
+            PersonColors1.prototype.sayAge = function () {
+                console.log(this.age);
+            }
+            let inheritColor = new PersonColors1('jack', 18);
+            inheritColor.colors.push('green');
+            console.log(inheritColor.colors);
+            inheritColor.sayName();
+            inheritColor.sayAge();
+            let inheritColor1 = new PersonColors1('marry', 19);
+            console.log(inheritColor1.colors);
+            inheritColor1.sayName();
+            inheritColor1.sayAge();
+
+  + 原型式继承
     - 一个对象作为另一个对象那个的基础
     - 可以通过Object.create()规范了原型式的继承
-  - 寄生式继承
-    - 主要通过为对象添加函数，降低了函数的复用性
-  - 寄生组合式继承
-    - 两次调用超类型构造函数，分别在创建子类型原型的时候和在子类型构造函数的内部
-    - 时引用类型最理想的继承范式
+    - function object(o) {
 
+                function F() {};
+                F.prototype = o;
+                return new F()
+            }
+            // 通过create()实现原型链的继承
+            let person = {
+                name: "jack",
+                friend: ['a', 'b', 'c']
+            }
+            let person1 = Object.create(person);
+            person1.friend.push('d');
+            person1.name = 'marry';
+            console.log(person1.name);
+            console.log(person1.friend);
+
+  + 寄生式继承
+    - 主要通过为对象添加函数，降低了函数的复用性
+  + 寄生组合式继承
+    - 两次调用超类型构造函数，分别在创建子类型原型的时候和在子类型构造函数的内部
+    - 是引用类型最理想的继承范式
+    - function Person(name){
+                this.name = name;
+                this.colors = ['red', 'blcak', 'blue'];
+            }
+            Person.prototype.sayName = function(){
+                console.log(this.name);
+            }
+            function Person1(name,age){
+                Person.call(this,name);//第二次调用
+                this.age = age;
+            }
+
+            Person1.prototype = new Person();//第一次调用
+            Person1.prototype.constructor = Person1;
+            Person1.prototype.sayAge = function(){
+                console.log(this.age);
+            }
