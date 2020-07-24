@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>function</title>
+</head>
+
+<body>
+    <script>
+        // 递归
+        {
+            {
+                function factorial(num) {
+                    if (num <= 1) {
+                        return 1;
+                    } else {
+                        return num * factorial(num - 1);
+                    }
+                }
+                let anotherFactorial = factorial;
+                // factorial = null;
+                console.log(anotherFactorial(4)); //程序报错
+            }
+
+            // 解决当factorial赋值给一个变量，factorial=null时的问题
+            {
+                function factorial(num) {
+                    if (num <= 1) {
+                        return 1;
+                    } else {
+                        return num * arguments.callee(num - 1);
+                    }
+                }
+                let anotherFactorial = factorial;
+                factorial = null
+                console.log(anotherFactorial(4));
+            }
+            // 也可以创建多一个函数，然后赋值给变量factorial
+            {
+                let factorial = (function f(num) {
+                    if (num <= 1) {
+                        return 1;
+                    } else {
+                        return num * f(num - 1);
+                    }
+                })
+                let anotherFactorial = factorial;
+                factorial = null;
+                console.log(anotherFactorial(4));//不会报错
+            }
+        }
+    </script>
+</body>
+
+</html>
