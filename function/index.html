@@ -99,7 +99,36 @@
                     }
                 }
             }
-            console.log(obj.getName()());//obj
+            console.log(obj.getName()()); //obj
+        }
+        // 模仿块级作用域
+        {
+            // 函数表达式
+            (function () {
+                // 这里是块级作用域
+                console.log(111)
+            })()
+        }
+        // 私有变量
+        {
+            let application = function () {
+                // 私有变量和函数
+                let arr = new Array();
+                arr.push("jack")
+                // 公共的方法
+                return {
+                    getComponentCount: function () {
+                        return arr.length;
+                    },
+                    registerComponent: function (component) {
+                        if (typeof component == "string") {
+                            arr.push(component);
+                        }
+                        return arr
+                    }
+                }
+            }
+            console.log(application().registerComponent('aaa'))//["jack", "aaa"]
         }
     </script>
 </body>

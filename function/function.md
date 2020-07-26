@@ -102,11 +102,41 @@
                 }
             }
             console.log(obj.getName()());//obj
+
     - 内存泄漏
         - 如果闭包中的作用域链中保存着一个HTML元素，那么就意味着该元素无法被销毁
-- 模仿块级作用域
-- 私有变量
-    - 静态私有变量
-    - 模块模式
-    - 增强的模块模式
+* 模仿块级作用域
+    - // 函数表达式
 
+            (function(){
+                // 这里是块级作用域
+                console.log(111)
+            })()
+
+    - 这种做法可以减少闭包占用内存的问题
+* 私有变量
+    - 把有权访问私有变量和私有函数的共有方法称为特权方法
+    - 静态私有变量
+        - 在私有作用域中定义私有变量或函数
+    - 模块模式
+        - 单例创建的私有变量和特权方法，单例指的是只有一个实例的对象
+    - 增强的模块模式
+    - let application = function () {
+
+                // 私有变量和函数
+                let arr = new Array();
+                arr.push("jack")
+                // 公共的方法
+                return {
+                    getComponentCount: function () {
+                        return arr.length;
+                    },
+                    registerComponent: function (component) {
+                        if (typeof component == "string") {
+                            arr.push(component);
+                        }
+                        return arr
+                    }
+                }
+            }
+            console.log(application().registerComponent('aaa'))//["jack", "aaa"]
